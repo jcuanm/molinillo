@@ -1,12 +1,33 @@
-<nav class="navbar navbar-default">
-	<div class="container">
-		<div id="navbar" class="navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a href="#">Molinillo</a>
-				<li><a href="/">Home</a></li>
-				<li><a href="/about">About</a></li>
-				<li><a href="/articles">Articles</a></li>
-			</ul>
-		</div><!--/.nav-collapse -->
+<div class="row">
+	<div id="navbar">
+		<div class="col-lg-4">
+			<a class="navigation-bar-header-left" href="/">Molinillo</a>
+			<a class="navigation-bar-header-left" href="/">Country</a>
+			<a class="navigation-bar-header-left" href="/">Brand</a>
+		</div>
+
+		<div id="search-background" class="col-lg-4">
+			<div id="custom-search-input">
+				<div class="input-group">
+					<input type="text" class="form-control input-lg" placeholder="Search Molinillo"/>
+					<span class="input-group-btn">
+                        			<button class="btn btn-info btn-lg" type="button">
+                            				<i class="glyphicon glyphicon-search"></i>
+                        			</button>
+                    			</span>
+				</div>
+        		</div>
+		</div>
+
+		<div class="col-lg-4">
+			<a class="navigation-bar-header-right" href="">Cart</a>
+			{% if session['logged_in'] %}
+			<a class="navigation-bar-header-right" href="/logout">Logout</a>
+			{% else %}
+			<a class="navigation-bar-header-right" href="/login">Login</a>
+			{% endif %}
+			<a class="navigation-bar-header-right" href="">Language</a>
+			<a class="navigation-bar-header-right" href="/about">About</a>
+		</div>
 	</div>
-</nav>
+</div>
