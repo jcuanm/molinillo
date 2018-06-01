@@ -1,15 +1,15 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, g
 from functools import wraps
 import sqlite3
 
 # Create application object
 app = Flask(__name__)
 
-# Initializing secret key
-app.secret_key = "my precious"
-app.database = "molinillo_data.db"
 
-# Custom login required decorator
+app.secret_key = "my precious"       # Initializing secret key
+app.database = "molinillo_data.db"   # Initializing database to the non-sensitive database
+
+# Custom login-required decorator
 def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
@@ -34,6 +34,7 @@ def login():
 		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
 			error = 'Invalid username or password. Please try again.'
 		else:
+			g.db = connect_db()
 			session['logged_in'] = True
 			return redirect(url_for('home'))
 	return render_template('login.html', error=error)
@@ -43,6 +44,15 @@ def login():
 def logout():
 	session.pop('logged_in', None)
 	return redirect(url_for('home'))
+
+@app.route('/vendor_portal')
+@login_required
+def vendor_portal():
+	return render_template('vendor_portal.html')
+
+@app.route('/register')
+def register():
+	return render_template('register.html')
 
 # Makes the initial connection to the molinillo_data.db
 def connect_db():
