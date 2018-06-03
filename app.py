@@ -1,13 +1,16 @@
-from flask import Flask, render_template, redirect, url_for, request, session, g
+from flask import Flask, render_template, redirect, url_for, request, session
+from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
-import sqlite3
 
 # Create application object
 app = Flask(__name__)
 
 
 app.secret_key = "my precious"       # Initializing secret key
-app.database = "molinillo_data.db"   # Initializing database to the non-sensitive database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///molinillo_data.db'
+
+db = SQLAlchemy(app)
+from models import *
 
 # Custom login-required decorator
 def login_required(f):
@@ -21,7 +24,10 @@ def login_required(f):
 
 @app.route('/')
 def home():
-	return render_template('home.html')
+	vendors = []
+	if 'logged_in' in session:
+		vendors = db.session.query(Vendors).all()
+	return render_template('home.html', vendors=vendors)
 
 @app.route('/about')
 def about():
@@ -34,7 +40,6 @@ def login():
 		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
 			error = 'Invalid username or password. Please try again.'
 		else:
-			g.db = connect_db()
 			session['logged_in'] = True
 			return redirect(url_for('home'))
 	return render_template('login.html', error=error)
@@ -54,9 +59,6 @@ def vendor_portal():
 def register():
 	return render_template('register.html')
 
-# Makes the initial connection to the molinillo_data.db
-def connect_db():
-	return sqlite3.connect(app.database)
 
 if __name__ == '__main__':
 	app.run(debug=True)

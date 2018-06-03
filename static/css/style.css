@@ -4,7 +4,11 @@
 	font-size: 23px;
 	text-align:center;
 	padding:20px;
+}
+
+.navigation-bar-header-left:hover{
 	text-decoration:none;
+	color:white;
 }
 
 .navigation-bar-header-right{
@@ -13,7 +17,11 @@
 	font-size: 23px;
 	text-align:center;
 	padding:20px;
+}
+
+.navigation-bar-header-right:hover{
 	text-decoration:none;
+	color:white;
 }
 
 #custom-search-input{
