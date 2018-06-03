@@ -1,5 +1,6 @@
 from app import db
 
+# Creates a vendor class that stores vendors' information in a table
 class Vendors(db.Model):
 
 	__tablename__ = "vendors"
@@ -39,5 +40,6 @@ class Vendors(db.Model):
 		self.email = email
 		self.phone = phone
 
+	# Handles the format when printing out a Vendor Object
 	def __repr__(self):
 		return '<company {}'.format(self.company)

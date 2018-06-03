@@ -1,14 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+import os
 
 # Create application object
 app = Flask(__name__)
 
-
-app.secret_key = "my precious"       # Initializing secret key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///molinillo_data.db'
-
+app.config.from_object(os.environ['APP_SETTINGS'])
+print os.environ['APP_SETTINGS']
 db = SQLAlchemy(app)
 from models import *
 
@@ -22,6 +21,7 @@ def login_required(f):
 			return redirect(url_for('login'))
 	return wrap
 
+# Home page routing
 @app.route('/')
 def home():
 	vendors = []
@@ -29,10 +29,12 @@ def home():
 		vendors = db.session.query(Vendors).all()
 	return render_template('home.html', vendors=vendors)
 
+# About page routing
 @app.route('/about')
 def about():
 	return render_template('about.html')
 
+# Login page routing
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
@@ -44,6 +46,7 @@ def login():
 			return redirect(url_for('home'))
 	return render_template('login.html', error=error)
 
+# Execute Logout if logged in
 @app.route('/logout')
 @login_required
 def logout():
@@ -61,4 +64,4 @@ def register():
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run()
