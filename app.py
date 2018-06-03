@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, session
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
+import flask_sqlalchemy
 from functools import wraps
 import os
 
@@ -8,7 +9,7 @@ app = Flask(__name__)
 
 app.config.from_object(os.environ['APP_SETTINGS'])
 print (os.environ['APP_SETTINGS'])
-db = SQLAlchemy(app)
+db = flask_sqlalchemy.SQLAlchemy(app)
 from models import *
 
 # Custom login-required decorator
