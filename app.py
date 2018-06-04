@@ -1,10 +1,12 @@
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from functools import wraps
 import os
 
 # Create application object
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)

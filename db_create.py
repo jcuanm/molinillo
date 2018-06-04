@@ -14,7 +14,8 @@ db.session.add(Vendors(
 "02138", 
 "USA", 
 "jcuanm@gmail.com", 
-"9518162589"))
+"9518162589",
+"it's a secret"))
 
 db.session.add(Vendors(
 "javi", 
@@ -25,7 +26,8 @@ db.session.add(Vendors(
 "91739", 
 "USA", 
 "yo@whatup.com", 
-"9518162555"))
+"9518162555",
+"password"))
 
 #commit
 db.session.commit()

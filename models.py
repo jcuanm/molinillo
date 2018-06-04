@@ -1,4 +1,4 @@
-from app import db
+from app import db, bcrypt
 
 # Creates a vendor class that stores vendors' information in a table
 class Vendors(db.Model):
@@ -16,6 +16,7 @@ class Vendors(db.Model):
 	country = db.Column(db.String, nullable=False)
 	email = db.Column(db.String, nullable=False)
 	phone = db.Column(db.String, nullable=False)
+	password = db.Column(db.String, nullable=False)
 
 	# Initialization
 	def __init__(
@@ -28,7 +29,8 @@ class Vendors(db.Model):
 			zipcode,
 			country,
 			email,
-			phone):
+			phone,
+			password):
 				
 		self.company = company
 		self.address_1 = address_1
@@ -39,6 +41,7 @@ class Vendors(db.Model):
 		self.country = country
 		self.email = email
 		self.phone = phone
+		self.password = bcrypt.generate_password_hash(password) 
 
 	# Handles the format when printing out a Vendor Object
 	def __repr__(self):
