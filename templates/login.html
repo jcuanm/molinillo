@@ -1,24 +1,45 @@
-
 {% extends 'layout.html' %}
 
+
+
 {% block title %}
+
 Molinillo | Login
+
 {% endblock %}
 
+
+
 {% block body %}
+
 		<div class="container">
+
 			<h1>Please login</h1>
+
 			<br>
+
 			<form method="post" action="">
-				<input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
-				<input type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
+				{{ form.csrf_token }}
+
+				{{ form.email(placeholder="email") }}
+				{{ form.password(placeholder="password") }}
+
 				<input class="btn btn-default" type="submit" value="Login">
+
 			</form>
+
 			<p>Don't have a profile?</p>
+
 			<p>Register <a href="/register">here</a></p>
 
+
+
 			{% if error %}
+
 				<p class="error"><strong>Error:</strong> {{ error }}</p>
+
 			{% endif %}
+
 		</div>
+
 {% endblock %}

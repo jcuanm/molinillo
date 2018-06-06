@@ -43,6 +43,18 @@ class Vendors(db.Model):
 		self.phone = phone
 		self.password = bcrypt.generate_password_hash(password) 
 
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+        	return True
+
+	def is_anonymous(self):
+        	return False
+
+    	def get_id(self):
+        	return unicode(self.id)
+
 	# Handles the format when printing out a Vendor Object
 	def __repr__(self):
 		return '<company {}'.format(self.company)

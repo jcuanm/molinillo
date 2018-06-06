@@ -1,4 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request
+from form import LoginForm
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from functools import wraps
@@ -7,26 +9,23 @@ import os
 # Create application object
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 from models import *
+login_manager.login_view = '/login'
 
-# Custom login-required decorator
-def login_required(f):
-	@wraps(f)
-	def wrap(*args, **kwargs):
-		if 'logged_in' in session:
-			return f(*args, **kwargs)
-		else:
-			return redirect(url_for('login'))
-	return wrap
+@login_manager.user_loader
+def load_vendor(vendor_id):
+	return Vendors.query.filter(Vendors.id == int(vendor_id)).first()
 
 # Home page routing
 @app.route('/')
 def home():
 	vendors = []
-	if 'logged_in' in session:
+	if current_user.is_authenticated():
 		vendors = db.session.query(Vendors).all()
 	return render_template('home.html', vendors=vendors)
 
@@ -39,19 +38,23 @@ def about():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
+	form = LoginForm(request.form)
 	if request.method == 'POST':
-		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-			error = 'Invalid username or password. Please try again.'
-		else:
-			session['logged_in'] = True
-			return redirect(url_for('home'))
-	return render_template('login.html', error=error)
+		if form.validate_on_submit():
+			vendor = Vendors.query.filter_by(email=request.form['email']).first()
+			if vendor != None and bcrypt.check_password_hash(vendor.password, request.form['password']):
+				login_user(vendor)
+				return redirect(url_for('home'))
+			else:
+				error = 'Invalid Credentials. Please try again.'
+	
+	return render_template('login.html', form=form, error=error)
 
 # Execute Logout if logged in
 @app.route('/logout')
 @login_required
 def logout():
-	session.pop('logged_in', None)
+	logout_user()
 	return redirect(url_for('home'))
 
 @app.route('/vendor_portal')
