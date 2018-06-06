@@ -2,13 +2,12 @@ from flask import Flask, render_template, redirect, url_for, request
 from form import LoginForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
+from passlib.hash import pbkdf2_sha256
 from functools import wraps
 import os
 
 # Create application object
 app = Flask(__name__)
-bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -42,7 +41,7 @@ def login():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			vendor = Vendors.query.filter_by(email=request.form['email']).first()
-			if vendor != None and bcrypt.check_password_hash(vendor.password, request.form['password']):
+			if vendor != None and pbkdf2_sha256.verify(request.form['password'], vendor.password):
 				login_user(vendor)
 				return redirect(url_for('home'))
 			else:

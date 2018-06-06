@@ -1,4 +1,5 @@
-from app import db, bcrypt
+from app import db
+from passlib.hash import pbkdf2_sha256
 
 # Creates a vendor class that stores vendors' information in a table
 class Vendors(db.Model):
@@ -41,7 +42,7 @@ class Vendors(db.Model):
 		self.country = country
 		self.email = email
 		self.phone = phone
-		self.password = bcrypt.generate_password_hash(password) 
+		self.password = pbkdf2_sha256.encrypt(password) 
 
 	def is_authenticated(self):
 		return True
