@@ -1,3 +1,9 @@
+#################
+
+#### imports ####
+
+#################
+
 from flask import Flask, render_template, redirect, url_for, request
 from form import LoginForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -6,21 +12,42 @@ from werkzeug.security import check_password_hash
 from functools import wraps
 import os
 
-# Create application object
-app = Flask(__name__)
-login_manager = LoginManager()
-login_manager.init_app(app)
+########################
 
-app.config.from_object(os.environ['APP_SETTINGS'])
-db = SQLAlchemy(app)
+#### Configurations ####
+
+########################
+
+app = Flask(__name__)
+login_manager = LoginManager() 
+login_manager.init_app(app) # Using Flask Login-Forms to login the users
+app.config.from_object(os.environ['APP_SETTINGS']) # Setting environment variables
+db = SQLAlchemy(app) # Using SQLAlchemy to handle SQL queries
 from models import *
 login_manager.login_view = '/login'
+
+##########################
+
+#### Helper Functions ####
+
+##########################
+
+# Authenticates the vendor when trying to login
+def is_valid_vendor(vendor, vendor_password_hash, attempted_password):
+	return vendor != None and check_password_hash(vendor_password_hash, attempted_password) 
 
 @login_manager.user_loader
 def load_vendor(vendor_id):
 	return Vendors.query.filter(Vendors.id == int(vendor_id)).first()
 
-# Home page routing
+#################
+
+#### Routes ####
+
+#################
+
+### Use decorators to link the functions to a url ###
+
 @app.route('/')
 def home():
 	vendors = []
@@ -28,12 +55,10 @@ def home():
 		vendors = db.session.query(Vendors).all()
 	return render_template('home.html', vendors=vendors)
 
-# About page routing
 @app.route('/about')
 def about():
 	return render_template('about.html')
 
-# Login page routing
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
@@ -41,7 +66,7 @@ def login():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			vendor = Vendors.query.filter_by(email=request.form['email']).first()
-			if vendor != None and check_password_hash(vendor.password, request.form['password']):
+			if is_valid_vendor(vendor, vendor.password, request.form['password']):
 				login_user(vendor)
 				return redirect(url_for('home'))
 			else:
@@ -49,7 +74,6 @@ def login():
 	
 	return render_template('login.html', form=form, error=error)
 
-# Execute Logout if logged in
 @app.route('/logout')
 @login_required
 def logout():
