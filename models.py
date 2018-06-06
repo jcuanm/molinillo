@@ -54,7 +54,7 @@ class Vendors(db.Model):
         	return False
 
 	def get_id(self):
-		return unicode(self.id)
+		return str(self.id).encode("utf-8").decode("utf-8")  
 
 	# Handles the format when printing out a Vendor Object
 	def __repr__(self):
