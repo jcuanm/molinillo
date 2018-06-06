@@ -52,8 +52,8 @@ class Vendors(db.Model):
 	def is_anonymous(self):
         	return False
 
-    	def get_id(self):
-        	return unicode(self.id)
+	def get_id(self):
+		return unicode(self.id)
 
 	# Handles the format when printing out a Vendor Object
 	def __repr__(self):
