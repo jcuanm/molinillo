@@ -5,9 +5,12 @@ Molinillo.com
 {% endblock %}
 
 {% block body %}
-<!-- FIX THIS SPACING ISSUE -->
-<br><br><br><br><br>
-HOME<br><br><br><br>
+	<div class="row">
+        	<div class="col-xs-12 col-lg-12 full-width">
+			<img id="molinillo-mission" alt="Molinillo Mission" class="img-responsive center-block" src="{{ url_for('static', filename='img/cacao_pods_cover.png') }}">
+		</div>
+
+	</div>
 
 {% for vendor in vendors %}
 	<strong>ID: </strong> {{ vendor.id }}

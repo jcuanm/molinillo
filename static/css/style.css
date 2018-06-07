@@ -1,3 +1,8 @@
+.full-width{
+	margin:0;
+	padding:0;
+}
+
 .navigation-bar-header-left{
 	color:white;
 	float:left;
@@ -60,8 +65,17 @@
     font-size: 23px;
 }
 
+#molinillo-mission{
+	width:100%;
+	height:250px;
+	z-index:-1;
+}
+
 #navbar{
 	height:90px;
-	background-color:#99004C;
+	background-color:#026439;
 	padding:10px;
+	-moz-box-shadow:    0 8px 8px 2px #ccc;
+  	-webkit-box-shadow: 0 8px 8px 2px #ccc;
+  	box-shadow:         0 8px 8px 2px #ccc;
 }
