@@ -1,11 +1,11 @@
 #################
 
-#### imports ####
+#### Imports ####
 
 #################
 
 from flask import Flask, render_template, redirect, url_for, request
-from form import LoginForm
+from form import LoginForm, RegisterForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
@@ -20,7 +20,7 @@ import os
 
 app = Flask(__name__)
 login_manager = LoginManager() 
-login_manager.init_app(app) # Using Flask Login-Forms to login the users
+login_manager.init_app(app) # Using Flask-Login Forms to login the users
 app.config.from_object(os.environ['APP_SETTINGS']) # Setting environment variables
 db = SQLAlchemy(app) # Using SQLAlchemy to handle SQL queries
 from models import *
@@ -85,10 +85,28 @@ def logout():
 def vendor_portal():
 	return render_template('vendor_portal.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-	return render_template('register.html')
-
+	form = RegisterForm()
+	if form.validate_on_submit():
+		if request.form == 'POST':
+			vendor = Vendors(
+					company=form.company_name.data,
+					address_1=form.address_1.data,
+					address_2=form.address_2.data,
+					city=form.city.data,
+					state=form.state.data,
+					zipcode=form.zipcode.data,
+					country=form.country.data,
+					email=form.email.data,
+					phone=form.phone.data,
+					password=form.password.data,
+				)
+			db.session.add(vendor)
+			db.session.commit()
+			login_user(vendor)
+			return redirect(url_for('home'))
+	return render_template('register.html', form=form)
 
 if __name__ == '__main__':
 	app.run()

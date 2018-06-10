@@ -20,14 +20,17 @@
 		</div>
 
 		<div class="col-lg-4">
-			<a class="navigation-bar-header-right" href="">Cart</a>
+			<a class="navigation-bar-header-right" href=""><i class="glyphicon glyphicon-shopping-cart"></i></a>
 			{% if current_user.is_authenticated() %}
 			<a class="navigation-bar-header-right" href="/logout">Logout</a>
 			{% else %}
-			<a class="navigation-bar-header-right" href="/login">Login</a>
+			<!-- Login Dropdown -->
+			{% include 'includes/_navbar_login_dropdown.html' %}
 			{% endif %}
-			<a class="navigation-bar-header-right" href="">Language</a>
-			<a class="navigation-bar-header-right" href="/about">About</a>
+
+			<!-- Language Dropdown -->
+			{% include 'includes/_navbar_language_dropdown.html' %}
+
 		</div>
 	</div>
 </div>
