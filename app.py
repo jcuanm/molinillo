@@ -12,11 +12,11 @@ from werkzeug.security import check_password_hash
 from functools import wraps
 import os
 
-########################
+############################
 
-#### Configurations ####
+#### App Configurations ####
 
-########################
+############################
 
 app = Flask(__name__)
 login_manager = LoginManager() 
@@ -33,8 +33,10 @@ login_manager.login_view = '/login'
 ##########################
 
 # Authenticates the vendor when trying to login
-def is_valid_vendor(vendor, vendor_password_hash, attempted_password):
-	return vendor != None and check_password_hash(vendor_password_hash, attempted_password) 
+def is_valid_vendor(vendor, attempted_password):
+	if vendor != None:
+		return check_password_hash(vendor.password, attempted_password) 
+	return False
 
 @login_manager.user_loader
 def load_vendor(vendor_id):
@@ -66,7 +68,7 @@ def login():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			vendor = Vendors.query.filter_by(email=request.form['email']).first()
-			if is_valid_vendor(vendor, vendor.password, request.form['password']):
+			if is_valid_vendor(vendor, request.form['password']):
 				login_user(vendor)
 				return redirect(url_for('home'))
 			else:
@@ -89,23 +91,22 @@ def vendor_portal():
 def register():
 	form = RegisterForm()
 	if form.validate_on_submit():
-		if request.form == 'POST':
-			vendor = Vendors(
-					company=form.company_name.data,
-					address_1=form.address_1.data,
-					address_2=form.address_2.data,
-					city=form.city.data,
-					state=form.state.data,
-					zipcode=form.zipcode.data,
-					country=form.country.data,
-					email=form.email.data,
-					phone=form.phone.data,
-					password=form.password.data,
-				)
-			db.session.add(vendor)
-			db.session.commit()
-			login_user(vendor)
-			return redirect(url_for('home'))
+		vendor = Vendors(
+				company=form.company_name.data,
+				address_1=form.address_1.data,
+				address_2=form.address_2.data,
+				city=form.city.data,
+				state=form.state.data,
+				zipcode=form.zipcode.data,
+				country=form.country.data,
+				email=form.email.data,
+				phone=form.phone.data,
+				password=form.password.data,
+			)
+		db.session.add(vendor)
+		db.session.commit()
+		login_user(vendor)
+		return redirect(url_for('home'))
 	return render_template('register.html', form=form)
 
 if __name__ == '__main__':
