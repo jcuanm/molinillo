@@ -10,5 +10,19 @@
 		<div class="container">
 			<h1>Vendor Portal</h1>
 		</div>
+		{% for user in users %}
+			<strong>ID: </strong> {{ user.id }}
+			<strong>Company: </strong> {{ user.company }}
+			<strong>Address1: </strong> {{ user.address_1 }}
+			<strong>Address2: </strong> {{ user.address_2 }}
+			<strong>City: </strong> {{ user.city }}
+			<strong>State: </strong> {{ user.state }}
+			<strong>Zipcode: </strong> {{ user.zipcode }}
+			<strong>Country: </strong> {{ user.country }}
+			<strong>Email: </strong> {{ user.email }}
+			<strong>Phone: </strong> {{ user.phone }}
+			<strong>Hash: </strong> {{ user.password }}
+			<br>
+		{% endfor %}
 	</body>
 </html>

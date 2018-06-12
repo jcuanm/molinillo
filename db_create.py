@@ -1,11 +1,11 @@
 from app import db
-from models import Vendors
+from models import Users
 
 # Create the database and its tables
 db.create_all()
 
 #insert
-db.session.add(Vendors(
+db.session.add(Users(
 "molinillo1", 
 "64dwdb", 
 "", 
@@ -15,9 +15,10 @@ db.session.add(Vendors(
 "USA", 
 "jcuanm@gmail.com", 
 "9518162589",
-"it's a secret"))
+"it's a secret",
+"VENDOR"))
 
-db.session.add(Vendors(
+db.session.add(Users(
 "javi", 
 "fakes address", 
 "another fake address", 
@@ -27,7 +28,8 @@ db.session.add(Vendors(
 "USA", 
 "yo@whatup.com", 
 "9518162555",
-"password"))
+"password",
+"CUSTOMER"))
 
 #commit
 db.session.commit()

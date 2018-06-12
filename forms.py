@@ -6,9 +6,10 @@ class LoginForm(Form):
 	email = TextField("Email", validators=[DataRequired()]) 
 	password = PasswordField("Password", validators=[DataRequired()]) 
 
-class RegisterForm(Form):
-	company_name = TextField(
-		'Company Name',
+# Defaults to the fields needed for a customer, and implements the Customer registration form
+class CustomerRegisterForm(Form):
+	username = TextField(
+		'Username',
 		validators=[DataRequired(), Length(min=3, max=25)]
 	)
 
@@ -62,4 +63,11 @@ class RegisterForm(Form):
 	phone = TextField(
 		'Phone Number',
 		validators=[Length(min=0, max=30)]
+	)
+
+# Inherits from User class and implements the Vendor registration form 
+class VendorRegisterForm(CustomerRegisterForm):
+	username = TextField(
+		'Vendor Name',
+		validators=[DataRequired(), Length(min=3, max=25)]
 	)

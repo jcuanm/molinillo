@@ -1,14 +1,14 @@
 from app import db
 from werkzeug.security import generate_password_hash
 
-# Creates a vendor class that stores vendors' information in a table
-class Vendors(db.Model):
+# Creates a user class that stores users' information in a table
+class Users(db.Model):
 
-	__tablename__ = "vendors"
+	__tablename__ = "users"
 
 	# Column names
 	id = db.Column(db.Integer, primary_key=True)
-	company = db.Column(db.String, nullable=False)
+	username = db.Column(db.String, nullable=False)
 	address_1 = db.Column(db.String, nullable=False)
 	address_2 = db.Column(db.String, nullable=False)
 	city = db.Column(db.String, nullable=False)
@@ -18,11 +18,12 @@ class Vendors(db.Model):
 	email = db.Column(db.String, nullable=False)
 	phone = db.Column(db.String, nullable=False)
 	password = db.Column(db.String, nullable=False)
+	urole = db.Column(db.String, nullable=False)
 
 	# Initialization
 	def __init__(
 			self,
-			company,
+			username,
 			address_1,
 			address_2,
 			city,
@@ -31,9 +32,10 @@ class Vendors(db.Model):
 			country,
 			email,
 			phone,
-			password):
+			password,
+			urole):
 				
-		self.company = company
+		self.username = username
 		self.address_1 = address_1
 		self.address_2 = address_2
 		self.city = city
@@ -43,6 +45,7 @@ class Vendors(db.Model):
 		self.email = email
 		self.phone = phone
 		self.password = generate_password_hash(password) 
+		self.urole = urole
 
 	def is_authenticated(self):
 		return True
@@ -56,6 +59,6 @@ class Vendors(db.Model):
 	def get_id(self):
 		return str(self.id).encode("utf-8").decode("utf-8")  
 
-	# Handles the format when printing out a Vendor Object
+	# Handles the format when printing out a User Object
 	def __repr__(self):
-		return '<company {}'.format(self.company)
+		return '<name {}'.format(self.username)
