@@ -13,8 +13,7 @@
 		{% for user in users %}
 			<strong>ID: </strong> {{ user.id }}
 			<strong>Company: </strong> {{ user.username }}
-			<strong>Address1: </strong> {{ user.address_1 }}
-			<strong>Address2: </strong> {{ user.address_2 }}
+			<strong>Address1: </strong> {{ user.street }}
 			<strong>City: </strong> {{ user.city }}
 			<strong>State: </strong> {{ user.state }}
 			<strong>Zipcode: </strong> {{ user.zipcode }}
@@ -22,6 +21,9 @@
 			<strong>Email: </strong> {{ user.email }}
 			<strong>Phone: </strong> {{ user.phone }}
 			<strong>Hash: </strong> {{ user.password }}
+			<strong>URole: </strong> {{ user.urole }}
+			<strong>Stripe ID: </strong> {{ user.stripe_id }}
+			<strong>Plan: </strong> {{ user.plan }}
 			<br>
 		{% endfor %}
 	</body>

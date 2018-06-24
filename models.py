@@ -9,8 +9,7 @@ class Users(db.Model):
 	# Column names
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String, nullable=False)
-	address_1 = db.Column(db.String, nullable=False)
-	address_2 = db.Column(db.String, nullable=False)
+	street = db.Column(db.String, nullable=False)
 	city = db.Column(db.String, nullable=False)
 	state = db.Column(db.String, nullable=False)
 	zipcode = db.Column(db.String, nullable=False)
@@ -19,13 +18,14 @@ class Users(db.Model):
 	phone = db.Column(db.String, nullable=False)
 	password = db.Column(db.String, nullable=False)
 	urole = db.Column(db.String, nullable=False)
+	stripe_id = db.Column(db.String, nullable=False)
+	plan = db.Column(db.String, nullable=False)
 
 	# Initialization
 	def __init__(
 			self,
 			username,
-			address_1,
-			address_2,
+			street,
 			city,
 			state,
 			zipcode,
@@ -33,11 +33,12 @@ class Users(db.Model):
 			email,
 			phone,
 			password,
-			urole):
+			urole,
+			stripe_id,
+			plan):
 				
 		self.username = username
-		self.address_1 = address_1
-		self.address_2 = address_2
+		self.street = street
 		self.city = city
 		self.state = state
 		self.zipcode = zipcode
@@ -46,6 +47,8 @@ class Users(db.Model):
 		self.phone = phone
 		self.password = generate_password_hash(password) 
 		self.urole = urole
+		self.stripe_id = stripe_id
+		self.plan = plan
 
 	def is_authenticated(self):
 		return True
@@ -62,3 +65,25 @@ class Users(db.Model):
 	# Handles the format when printing out a User Object
 	def __repr__(self):
 		return '<name {}'.format(self.username)
+
+
+class Plans(db.Model):
+
+	__tablename__ = "plans"
+
+	# Column names
+	id = db.Column(db.Integer, primary_key=True)
+	stripe_id = db.Column(db.String, nullable=False)
+	amount = db.Column(db.Integer, primary_key=False)
+	description = db.Column(db.String, nullable=False)
+
+	# Initialization
+	def __init__(
+			self,
+			stripe_id,
+			amount,
+			description):
+
+		self.stripe_id = stripe_id
+		self.amount = amount
+		self.description = description
