@@ -26,8 +26,8 @@ app.config.from_object(os.environ['APP_SETTINGS']) # Setting environment variabl
 db = SQLAlchemy(app) # Using SQLAlchemy to handle SQL queries
 from models import *
 login_manager.login_view = '/login'
-pub_key = "pk_test_AfpQRYMDWhhU0socYbDIVIUF" # MAKE ENVIORNMENT VARIABLE
-secret_key = "sk_test_gvVVUcsKVEhsHXL5B7EEMa8I" # MAKE ENVIORNMENT VARIABLE
+pub_key = os.environ['STRIPE_PUB_KEY'] # MAKE ENVIORNMENT VARIABLE
+secret_key = os.environ['STRIPE_SECRET_KEY'] # MAKE ENVIORNMENT VARIABLE
 stripe.api_key = secret_key
 
 ##########################
@@ -35,6 +35,12 @@ stripe.api_key = secret_key
 #### Helper Functions ####
 
 ##########################
+
+# Check if a given user is already registered given their an email
+def is_registered(email):
+	email_mod = email.replace(" ", "") # remove any white space from email
+	user = Users.query.filter_by(email=email_mod).first()
+	return user != None
 
 # Subscribes a customer to a monthly Stripe plan and returns the customer object
 def subscribe_user(plan_stripe_id, token, email): 
@@ -134,6 +140,10 @@ def vendor_register(plan_stripe_id):
 
 		token = request.form['stripeToken']
 		email = request.form['stripeEmail']
+
+		if is_registered(email):
+			error = "This email is already registered."
+			return render_template('vendor_register.html', form=form, pub_key=pub_key)
 
 		try:
 

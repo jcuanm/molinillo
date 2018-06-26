@@ -4,8 +4,10 @@ import os
 class BaseConfig(object):
 	DEBUG = False
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
-	SECRET_KEY = '\x80\xc2!\x05(`\xde\xaf\xeb\xa1`\x18D;0\xb2vud-\xf6i\x93Y'
+	SECRET_KEY = os.environ['SECRET_KEY']	
 	SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+	STRIPE_PUB_KEY = os.environ['STRIPE_PUB_KEY']
+	STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
 
 class DevelopmentConfig(BaseConfig):
 	DEBUG = True
