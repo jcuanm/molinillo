@@ -1,0 +1,25 @@
+<form method="post" action="">
+	{{ delete_user_form.csrf_token }}
+	<div class="modal fade" id="deleteModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h2 class="modal-title pop-up-header">Are you sure you would like to delete your account?</h2>
+				</div>
+
+				<div class="modal-body">
+					<b><div class="pop-up-subheader">CONFIRM PASSWORD TO PROCEED</div></b>
+
+					{{ delete_user_form.delete_password(class="edit-input") }}
+				</div>
+
+				<div class="modal-footer">
+					<input class="btn btn-default pop-up-button" type="submit" value="Yes - Delete Account">
+				</div>
+
+			</div>	  
+		</div>
+	</div>
+</form>

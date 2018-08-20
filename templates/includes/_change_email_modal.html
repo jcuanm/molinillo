@@ -1,0 +1,37 @@
+<form method="post" action="">
+	{{ change_email_form.csrf_token }}
+	<div class="modal fade" id="emailModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h2 class="modal-title pop-up-header">Account Settings</h2>
+					<p class="modal-title pop-up-header">Change login credentials</p>
+				</div>
+
+				<div class="modal-body">
+					<b><div class="pop-up-subheader">EXISTING EMAIL</div></b>
+					{{ user.email }}
+					<br>
+					<br> 
+						<b><div class="pop-up-subheader">NEW EMAIL</div></b>
+						{{ change_email_form.email(
+													class="edit-input",
+													value="") }}
+						<br>
+						<br> 
+						<b><div class="pop-up-subheader">PASSWORD</div></b>
+						{{ change_email_form.change_email_password(
+													class="edit-input",
+													value="") }}
+					</div>
+
+					<div class="modal-footer">
+						<input class="btn btn-default pop-up-button" type="submit" value="Save">
+					</div>
+
+			</div>	  
+		</div>
+	</div>
+</form>

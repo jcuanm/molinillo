@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField
+from wtforms import TextField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 class LoginForm(FlaskForm):
@@ -10,12 +10,12 @@ class LoginForm(FlaskForm):
 class CustomerRegisterForm(FlaskForm):
 	username = TextField(
 		'Username',
-		validators=[DataRequired(), Length(min=3, max=25)]
+		validators=[DataRequired(), Length(min=3, max=35)]
 	)
 
 	phone = TextField(
 		'Phone Number',
-		validators=[Length(min=0, max=30)]
+		validators=[Length(min=0, max=15)]
 	)
 
 	password = PasswordField(
@@ -36,3 +36,66 @@ class VendorRegisterForm(CustomerRegisterForm):
 		'Vendor Name',
 		validators=[DataRequired(), Length(min=3, max=25)]
 	)
+
+class AccountForm(FlaskForm):
+	username = TextField(
+		'Username',
+		validators=[DataRequired(), Length(min=1,max=30)]
+	)
+
+	phone = TextField(
+		'Phone Number',
+		validators=[Length(min=0,max=15)]
+	)
+
+	street1 = TextField(
+		'Street Address 1',
+		validators=[Length(min=0,max=35)]
+	)
+
+	street2 = TextField(
+		'Street Address 2',
+		validators=[Length(min=0,max=35)]
+	)
+
+	zipcode = TextField(
+		'ZIP',
+		validators=[Length(min=0,max=12)]
+	)
+
+	city = TextField(
+		'City',
+		validators=[Length(min=0,max=30)]
+	)
+
+class ChangeEmailForm(FlaskForm):
+	email = TextField(
+		'Email',
+		validators=[DataRequired(), Email(message="Not a valid email.")]
+	)
+
+	change_email_password = PasswordField(
+		'Password', 
+		validators=[DataRequired()]
+	) 
+
+class ChangePasswordForm(FlaskForm):
+	current_password = PasswordField(
+		"Current Password", 
+		validators=[DataRequired()]
+	) 
+
+	new_password = PasswordField(
+		'Password',
+		validators=[DataRequired(), Length(min=6, max=25),EqualTo('confirm', message='Passwords must match')]
+	)
+
+	confirm = PasswordField(
+		'Confirm Password'
+	)
+
+class DeleteUserForm(FlaskForm):
+	delete_password = PasswordField(
+		'Password', 
+		validators=[DataRequired()]
+	) 

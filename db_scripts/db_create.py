@@ -1,5 +1,5 @@
 from app import db
-from models import Users, Plans
+from models import Users, Plans, States
 
 # Create the database and its tables
 db.create_all()
@@ -30,7 +30,7 @@ db.session.add(Users(
 "password",
 "CUSTOMER",
 "cus_4fdAW5ftNQow1a"))
-'''
+
 db.session.add(Plans(
 "plan_D656saUwDokACG", 
 3000,
@@ -45,6 +45,8 @@ db.session.add(Plans(
 "plan_D6FmHzYYgTpPfV", 
 6000,
 "Molinillo monthly vendor subscription: tier 3"))
+'''
+
 
 #commit
 db.session.commit()

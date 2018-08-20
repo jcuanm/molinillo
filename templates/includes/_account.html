@@ -1,0 +1,153 @@
+<div class="row">
+	<div class="col-lg-12 col-sm-12 center-txt portal-header-border" >
+		<div class="portal-header">Account Settings</div>
+	</div>
+</div>
+
+<!-- Start of Adjust Vendor Credentials -->
+<form method="post" action="">
+	{{ general_info_form.csrf_token }}
+
+	<div class="row">
+		<div class="col-lg-6 col-sm-12 portal-header all-done-header">
+			All done?
+		</div>
+		<div class="col-lg-6 col-sm-12 center-txt">
+			<input class="btn btn-default all-done-btn" type="submit" value="Yes - Save">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12 col-sm-12 portal-header-border"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+		<div class="col-lg-4 col-sm-12">
+			<div class="portal-header">Vendor Credentials</div>
+			<div class="portal-subheader">Adjust name & login information</div><br>
+			<b><div class="portal-subheader">Vendor Name</div></b>
+			{{ general_info_form.username(
+											value=user.username, 
+											class="edit-input") }}
+			<div class="sidenote">This is your screen name throughout the Molinillo website</div>
+			<br>
+			<b><div class="portal-subheader">Email</div></b>
+		</div>
+
+		<div class="col-lg-7"><!-- Bootstrap Padding --></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+		<div class="col-lg-5 col-sm-12">
+			<span class="portal-subheader">
+				{{ user.email }}
+			</span>
+			<button type="button" data-target="#emailModal" data-toggle="modal" class="account-btn">Change Email</button>
+		</div>
+		<div class="col-lg-6"><!-- Bootstrap Padding --></div>
+	</div>
+	<br>
+
+	<div class="row">
+		<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+		<div class="col-lg-5 col-sm-12">
+			<b><div class="portal-subheader">Password</div></b>
+			{% for _ in range(6) %}
+			<span class="glyphicon glyphicon-star password-star"></span>
+			{% endfor %}
+			<button type="button" data-target="#passwordModal" data-toggle="modal" class="account-btn">Change Password</button>
+		</div>
+		<div class="col-lg-6"><!-- Bootstrap Padding --></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12 col-sm-12 portal-header-border"></div>
+	</div>
+
+	<!-- Start of Adjust Contact and Default Address  -->
+	<div class="row">
+			<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+			<div class="col-lg-4 col-sm-12">
+				<div class="portal-header">Phone Number & Default Address</div>
+				<div class="portal-subheader">Change your phone number and address info</div><br>
+				<b><div class="portal-subheader">Phone Number <i>(Optional)</i></div></b>
+				{{ general_info_form.phone(
+											value=user.phone, 
+											class="edit-input") }}
+			</div>
+			<div class="col-lg-7"><!-- Bootstrap Padding --></div>
+	</div>
+
+	<br>
+
+	<div class="row">
+		<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+		<div class="col-lg-5 col-sm-12">
+				<b><div class="portal-subheader">Street Address</div></b>
+				{{ general_info_form.street1(
+											value=user.street, 
+											class="edit-input") }}
+		</div>
+		<div class="col-lg-5 col-sm-12">
+			<b><div class="portal-subheader">Street Address 2</div></b>
+			{{ general_info_form.street2(
+										value=user.street2,
+										class="edit-input") }} 
+		</div>
+		<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+	</div>
+	<br>
+
+	<div class="row">
+		<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+		<div class="col-lg-2 col-sm-12">
+			<b><div class="portal-subheader">ZIP</div></b>
+			{{ general_info_form.zipcode(
+										value=user.zipcode, 
+										class="edit-input") }}
+		</div>
+		<div class="col-lg-3 col-sm-12">
+			<b><div class="portal-subheader">City</div></b>
+			{{ general_info_form.city(
+										value=user.city, 
+										class="edit-input") }}
+			
+		</div>
+		<div class="col-lg-4 col-sm-12">
+			<b><div class="portal-subheader">Country</div></b>
+			{% include 'includes/_countries.html' %}
+		</div>
+		<div class="col-lg-2"><!-- Bootstrap Padding --></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+		<div class="col-lg-4 col-sm-12">
+			<b><div class="portal-subheader">State</div></b>
+			{% include 'includes/_states.html' %}
+			<a data-toggle="popover" title="Popover Header" data-content="When you are uploading a new product into your inventory, the default address saves you from having to input the 'from' address multiple times by automitically filling it in. This typically works best for those with one main distribution location. To not include a default address, simply leave the fields blank and click the save button at the top.">What is a default address?</a>
+
+			<!-- Toggle text for the default address explanation -->
+			<script>$(document).ready(function(){$('[data-toggle="popover"]').popover();});</script>
+		</div>
+		<div class="col-lg-7"><!-- Bootstrap Padding --></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12 portal-header-border"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12 col-sm-12 center-txt">
+			<button type="button" data-target="#deleteModal" data-toggle="modal" id="delete-btn" class="btn btn-default">Delete Account</button>
+		</div>
+	</div>
+	
+</form>
+
+<!-- Adding the Pop-Up Modals -->
+{% include 'includes/_change_email_modal.html' %}
+{% include 'includes/_change_password_modal.html' %}
+{% include 'includes/_delete_user_modal.html' %}

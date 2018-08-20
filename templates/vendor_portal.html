@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -5,26 +6,24 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title> Vendor Portal </title>
 		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css')  }}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 	</head>
 	<body>
-		<div class="container">
-			<h1>Vendor Portal</h1>
+		<div class="container-fluid">
+			{% include 'includes/_portal_navbar.html' %}
+
+			{% if tab == "account" %}
+					{% include 'includes/_account.html' %}
+			{% elif tab == "billing" %}
+					{% include 'includes/_billing.html' %}
+			{% elif tab == "products" %}
+					{% include 'includes/_products.html' %}
+			{% elif tab == "history" %}
+					{% include 'includes/_history.html' %}
+			{% endif %}
+
 		</div>
-		{% for user in users %}
-			<strong>ID: </strong> {{ user.id }}
-			<strong>Company: </strong> {{ user.username }}
-			<strong>Address1: </strong> {{ user.street }}
-			<strong>City: </strong> {{ user.city }}
-			<strong>State: </strong> {{ user.state }}
-			<strong>Zipcode: </strong> {{ user.zipcode }}
-			<strong>Country: </strong> {{ user.country }}
-			<strong>Email: </strong> {{ user.email }}
-			<strong>Phone: </strong> {{ user.phone }}
-			<strong>Hash: </strong> {{ user.password }}
-			<strong>URole: </strong> {{ user.urole }}
-			<strong>Stripe ID: </strong> {{ user.stripe_id }}
-			<strong>Plan: </strong> {{ user.plan }}
-			<br>
-		{% endfor %}
 	</body>
 </html>
