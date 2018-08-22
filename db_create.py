@@ -30,23 +30,16 @@ db.session.add(Users(
 "password",
 "CUSTOMER",
 "cus_4fdAW5ftNQow1a"))
-
-db.session.add(Plans(
-"plan_D656saUwDokACG", 
-3000,
-"Molinillo monthly vendor subscription: tier 1"))
-
-db.session.add(Plans(
-"plan_D6Fm4sUCcQMI7Y", 
-4000,
-"Molinillo monthly vendor subscription: tier 2"))
-
-db.session.add(Plans(
-"plan_D6FmHzYYgTpPfV", 
-6000,
-"Molinillo monthly vendor subscription: tier 3"))
 '''
+db.session.add(Plans(
+"plan_DSJ2J4GWgA6gV7", 
+1500,
+"Standard monthly vendor subscription"))
 
+db.session.add(Plans(
+"plan_DSJ5PYWe9JZnuh", 
+3200,
+"Gold monthly vendor subscription"))
 
 #commit
 db.session.commit()
