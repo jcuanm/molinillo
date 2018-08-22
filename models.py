@@ -9,7 +9,8 @@ class Users(db.Model):
 	# Column names
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String, nullable=False)
-	street = db.Column(db.String, nullable=False)
+	street1 = db.Column(db.String, nullable=False)
+	street2 = db.Column(db.String, nullable=False)
 	city = db.Column(db.String, nullable=False)
 	state = db.Column(db.String, nullable=False)
 	zipcode = db.Column(db.String, nullable=False)
@@ -25,7 +26,8 @@ class Users(db.Model):
 	def __init__(
 			self,
 			username,
-			street,
+			street1,
+                        street2,
 			city,
 			state,
 			zipcode,
@@ -38,7 +40,8 @@ class Users(db.Model):
 			plan):
 				
 		self.username = username
-		self.street = street
+		self.street1 = street1
+		self.street2 = street2
 		self.city = city
 		self.state = state
 		self.zipcode = zipcode
@@ -66,7 +69,7 @@ class Users(db.Model):
 	def __repr__(self):
 		return '<name {}'.format(self.username)
 
-
+# Vendor subscription plan
 class Plans(db.Model):
 
 	__tablename__ = "plans"

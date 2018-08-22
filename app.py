@@ -91,8 +91,8 @@ def account(tab):
 
     if general_info_form.validate_on_submit(): 
             user.username = request.form['username']	
-            user.street = request.form['street1']	
-            # add street2!!!!!!!!!!!
+            user.street1 = request.form['street1']	
+            user.street2 = request.form['street2']	
             user.city = request.form['city']	
             user.zipcode = request.form['zipcode']	
             user.state = request.form['state']	
@@ -131,7 +131,6 @@ def account(tab):
 			   delete_user_form=delete_user_form,
                            tab=tab,
 			   user=user)
-                          # user_id=current_user.get_id())
 
 def billing(tab):
     print ("AHHHHHHHHHH","billing")
@@ -242,7 +241,8 @@ def vendor_register(plan_stripe_id):
                                     username=form.username.data,
                                     phone=form.phone.data,
                                     password=form.password.data,
-                                    street=request.form['stripeBillingAddressLine1'],
+                                    street1=request.form['stripeBillingAddressLine1'],
+                                    street2='',
                                     city=request.form['stripeBillingAddressCity'],
                                     state=request.form['stripeBillingAddressState'],
                                     zipcode=request.form['stripeBillingAddressZip'],
@@ -266,6 +266,7 @@ def vendor_register(plan_stripe_id):
                                             form=form, 
                                             pub_key=pub_key, 
                                             amount=plan.amount)
+
     return render_template('vendor_register.html', 
                             form=form, 
                             pub_key=pub_key, 

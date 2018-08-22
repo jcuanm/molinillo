@@ -1,5 +1,5 @@
 from app import db
-from models import Users, Plans, States
+from models import Users, Plans
 
 # Create the database and its tables
 db.create_all()
