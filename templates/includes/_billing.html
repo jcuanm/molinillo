@@ -7,7 +7,59 @@
 <div class="row">
 	<div class="col-lg-1"><!-- Bootstrap Padding --></div>
 	<div class="col-lg-4 col-sm-12">
-		<div class="portal-header">Your Credit & Debit Cards</div>
+		<div class="portal-header">Subscription Information</div>
+		<div class="portal-subheader">View & adjust your Molinillo subscriptions</div><br>
+		<b><div class="portal-subheader">Current Subscription</div></b>
+	</div>
+
+	<div class="col-lg-7"><!-- Bootstrap Padding --></div>
+</div>
+
+<div class="row">
+	<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+	<div class="col-lg-5 col-sm-12">
+		<img alt="Molinillo Mission" id="current-subscription-logo" src="{{ url_for('static', filename='img/light-blue-cover.png') }}">
+		<button type="button" data-target="#updateSubModal" data-toggle="modal" class="account-btn">Update Subscription</button><br>
+	</div>
+	<div class="col-lg-6"><!-- Bootstrap Padding --></div>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-lg-1"><!--Boostrap Padding--></div>
+	<div class="col-lg-11 col-sm-12">
+		<b><div class="portal-subheader">Amount</div></b>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-1"><!--Boostrap Padding--></div>
+	<div class="col-lg-11 col-sm-12">
+		<div class="portal-subheader">${{plan_amount}}</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-1"><!--Boostrap Padding--></div>
+	<div class="col-lg-11 col-sm-12">
+		<b><div class="portal-subheader">Next Due Date</div></b>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-1"><!--Boostrap Padding--></div>
+	<div class="col-lg-11 col-sm-12">
+		<div class="portal-subheader">{{current_period_end}}</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12 portal-header-border"></div>
+</div>
+
+<div class="row">
+	<div class="col-lg-1"><!-- Bootstrap Padding --></div>
+	<div class="col-lg-4 col-sm-12">
+		<div class="portal-header">Your Credit/Debit Cards</div>
 		<div class="portal-subheader">Payment methods for your Molinillo subscriptions</div><br>
 		<b><div class="portal-subheader">Card Information</div></b>
 	</div>
@@ -19,9 +71,10 @@
 	<div class="col-lg-1"><!-- Bootstrap Padding --></div>
 	<div class="col-lg-5 col-sm-12">
 		<span class="portal-subheader">
-			
+			**** - **** - **** - {{ last4 }}	
 		</span>
-		<button type="button" data-target="#emailModal" data-toggle="modal" class="account-btn">Change Email</button>
+		
+		{% include 'includes/_update_card_form.html' %}
 	</div>
 	<div class="col-lg-6"><!-- Bootstrap Padding --></div>
 </div>
@@ -30,19 +83,5 @@
 	<div class="col-lg-12 portal-header-border"></div>
 </div>
 
-<div class="row">
-	<div class="col-lg-1"><!-- Bootstrap Padding --></div>
-	<div class="col-lg-4 col-sm-12">
-		<div class="portal-header">Subscription Information</div>
-		<div class="portal-subheader">View & adjust your Molinillo subscriptions</div><br>
-		<b><div class="portal-subheader">Vendor Name</div></b>
-		<div class="sidenote">This is your screen name throughout the Molinillo website</div>
-	</div>
-
-	<div class="col-lg-7"><!-- Bootstrap Padding --></div>
-</div>
-
-
-<div class="row">
-	<div class="col-lg-12 portal-header-border"></div>
-</div>
+<!-- Adding the Pop-Up Modals -->
+{% include 'includes/_update_subscription_modal.html' %}

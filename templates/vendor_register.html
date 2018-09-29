@@ -54,6 +54,7 @@
 	</span>
 	</p>
 
+	<!-- Stripe Button -->
 	<script
 		src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 		data-key= {{ pub_key }}
@@ -63,6 +64,14 @@
 		data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
 		data-locale="auto">
 	</script>
+
+	<!-- Replace Stripe Btn w/ customizeable btn -->
+	<script>
+        // Hide default stripe button, be careful there if you
+        // have more than 1 button of that class
+        document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+	</script>
+	<button type="submit" class="btn">Update Info</button>
 
 </form>
 

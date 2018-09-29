@@ -11,6 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
 from functools import wraps
 import stripe
+import time
 import os
 
 
@@ -44,12 +45,19 @@ def change_password(user, new_password):
 
 # Update user's email in the database
 def change_email(user, new_email):
-    user.email = new_email
+    user.email = new_email # Updating on Heroku DB
+    stripe_user_data = stripe.Customer.retrieve(user.stripe_id)
+    stripe_user_data.email = new_email # Updating on Stripe DB
+    stripe_user_data.save()
     db.session.commit()
 
 # Return the user based on the primary key id 
 def get_user(user_id):
     return Users.query.filter_by(id=int(user_id)).first()
+
+# Return the plan based on the primary key id 
+def get_plan(plan_id):
+    return Plans.query.filter_by(id=int(plan_id)).first()
 
 # Check if a given user is already registered given their email
 def is_registered(email):
@@ -132,10 +140,62 @@ def account(tab):
                            tab=tab,
 			   user=user)
 
+# Handles the functionality for the Billing tab in the Vendor Portal
 def billing(tab):
-    print ("AHHHHHHHHHH","billing")
-    return render_template("/vendor_portal.html", 
-                           tab=tab)
+    user = get_user(current_user.get_id())
+    current_plan = get_plan(user.plan)
+    other_plan = get_plan(1 if current_plan.id == 2 else 2) # 1 == Standard Plan ID : 2 == Gold Standard ID 
+    stripe_user_data = stripe.Customer.retrieve(user.stripe_id)
+    current_period_end = time.ctime(stripe_user_data.subscriptions.data[0].current_period_end)
+    last4 = stripe_user_data.sources.data[0].last4
+    card_brand = stripe_user_data.sources.data[0].brand
+    update_subscription_form = UpdateSubscriptionForm(request.form) 
+
+    if update_subscription_form.validate_on_submit():
+        if authenticate_user(user, request.form['update_subscription_password']):
+
+            # Updating the Stripe subcription
+            subscription = stripe.Subscription.retrieve(stripe_user_data.subscriptions.data[0].id)
+            stripe.Subscription.modify(stripe_user_data.subscriptions.data[0].id,
+                    cancel_at_period_end=False,
+                    items=[{
+                        'id': subscription['items']['data'][0].id,
+                        'plan': other_plan.stripe_id,
+                    }]
+            )
+
+            stripe.Invoice.create(
+                      customer='cus_4fdAW5ftNQow1a',
+            )
+
+            user.plan = other_plan.id # Updating in Heroku
+            db.session.commit()
+            current_plan = get_plan(user.plan)
+
+    # Checking if the user has submitted a request to update card info
+    try:
+        stripe_user_data.source = request.form['stripeToken']
+        stripe_user_data.save()
+        last4 = stripe_user_data.sources.data[0].last4
+        return render_template("/vendor_portal.html", 
+                               tab=tab,
+                               last4=last4,
+                               pub_key=pub_key,
+                               update_subscription_form=update_subscription_form,
+                               current_period_end=current_period_end,
+                               current_plan_id=current_plan.id,
+                               plan_amount=current_plan.amount/100, # Divide by 100 b/c we store the amount in cents 
+                               email=user.email)
+    except:
+        return render_template("/vendor_portal.html", 
+                               tab=tab,
+                               last4=last4,
+                               pub_key=pub_key,
+                               update_subscription_form=update_subscription_form,
+                               current_period_end=current_period_end,
+                               current_plan_id=current_plan.id,
+                               plan_amount=current_plan.amount/100, # Divide by 100 b/c we store the amount in cents 
+                               email=user.email)
 
 def products(tab):
     print ("AHHHHHHHHHH","products")

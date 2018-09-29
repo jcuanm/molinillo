@@ -1,0 +1,21 @@
+<form style="display:inline" action="" method="post">
+	<script 
+			src="https://checkout.stripe.com/checkout.js" 
+			class="stripe-button"
+			data-key={{ pub_key }}
+			data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+			data-name="Molinillo"         
+			data-panel-label="Update Card Details"
+			data-label="Update Card Details"
+			data-allow-remember-me=false
+			data-locale="auto"
+			data-email={{ email }}
+		>
+	</script>
+	<script>
+			// Hide default stripe button, be careful there if you
+			// have more than 1 button of that class
+			document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+	</script>
+	<button type="submit" class="account-btn">Update Card Info</button>
+</form>

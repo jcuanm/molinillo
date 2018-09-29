@@ -37,6 +37,7 @@ class VendorRegisterForm(CustomerRegisterForm):
 		validators=[DataRequired(), Length(min=3, max=25)]
 	)
 
+# Form for the account tab in the vendor portal
 class AccountForm(FlaskForm):
 	username = TextField(
 		'Username',
@@ -68,6 +69,7 @@ class AccountForm(FlaskForm):
 		validators=[Length(min=0,max=30)]
 	)
 
+# Pop-up form for changing email in account tab 
 class ChangeEmailForm(FlaskForm):
 	email = TextField(
 		'Email',
@@ -79,6 +81,7 @@ class ChangeEmailForm(FlaskForm):
 		validators=[DataRequired()]
 	) 
 
+# Pop-up form for changing password in account tab 
 class ChangePasswordForm(FlaskForm):
 	current_password = PasswordField(
 		"Current Password", 
@@ -94,8 +97,16 @@ class ChangePasswordForm(FlaskForm):
 		'Confirm Password'
 	)
 
+# Pop-up form for deleting a user in account tab 
 class DeleteUserForm(FlaskForm):
 	delete_password = PasswordField(
 		'Password', 
 		validators=[DataRequired()]
 	) 
+
+# Pop-up form for updatign a user's subscription in billing tab 
+class UpdateSubscriptionForm(FlaskForm):
+	update_subscription_password = PasswordField(
+		'Password',
+		validators=[DataRequired(), Length(min=1,max=30)]
+	)
