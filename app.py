@@ -165,7 +165,7 @@ def billing(tab):
             )
 
             stripe.Invoice.create(
-                      customer='cus_4fdAW5ftNQow1a',
+                      customer=user.stripe_id,
             )
 
             user.plan = other_plan.id # Updating in Heroku
